@@ -3,27 +3,26 @@
 namespace App\Http\Api;
 
 use App\Http\Api\Traits\IssueTokenTrait;
+use App\Http\Requests\Api\LoginRequest;
 use App\Http\Requests\Api\RegisterRequest;
+use App\Http\Resources\UsersResource;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\UnauthorizedException;
+use App\Http\Resources\User as UserResource;
 
 class UserController extends ApiController
 {
     use IssueTokenTrait;
 
-    public function login(Request $request)
+    public function login(LoginRequest $request)
     {
-        $this->validate($request, [
-            'email' => 'required|email|max:255',
-            'password' => 'required'
-        ]);
-
         $user = User::where('email', $request->email)->first();
         if (!$user) {
             return $this->failed('用户不存在');
         }
+        $user = UsersResource::make($user)->hide(['id']);
 
         try {
             $tokens = $this->issueToken();
@@ -31,15 +30,13 @@ class UserController extends ApiController
             return $this->failed($e->getMessage());
         }
 
-        return $this->success(['tokens' => $tokens, 'user' => $user]);
+        return $this->success(['user' => $user]);
     }
 
     public function register(RegisterRequest $request)
     {
-        return $request->all();
-
         $user = User::create([
-            'name' => $request->username,
+            'name' => $request->name,
             'email' => $request->email,
             'password' => bcrypt($request->password)
         ]);
@@ -47,6 +44,7 @@ class UserController extends ApiController
         if (!$user) {
             return $this->failed('用户注册失败');
         }
+        $user = UserResource::make($user)->hide(['id']);
 
         try {
             $tokens = $this->issueToken();
@@ -55,15 +53,10 @@ class UserController extends ApiController
         }
 
         return $this->success(['tokens' => $tokens, 'user' => $user]);
-
     }
 
-    public function loginout()
+    public function logout()
     {
-        if (Auth::guard('api')->check()) {
-            Auth::guard('api')->user()->token()->delete();
-        }
 
-        return response()->json(['message' => '登出成功', 'status_code' => 200, 'data' => null]);
     }
 }

@@ -2,8 +2,6 @@
 
 namespace App\Http\Requests\Api;
 
-use Illuminate\Foundation\Http\FormRequest;
-
 class RegisterRequest extends FormRequest
 {
     /**
@@ -47,28 +45,20 @@ class RegisterRequest extends FormRequest
         ];
     }
 
-    protected function failedValidation(Validator $validator)
-    {
-        return 123;
-//        throw (new ValidationException($validator))
-//            ->errorBag($this->errorBag)
-//            ->redirectTo($this->getRedirectUrl());
-    }
-
-    public function response(array $errors)
-    {
-        $transformed = [];
-
-        foreach ($errors as $field => $message) {
-            $transformed[] = [
-                'field' => $field,
-                'message' => $message[0]
-            ];
-        }
-
-        return Response::json([
-            'status' => false,
-            'errors' => $transformed
-        ], JsonResponse::HTTP_UNPROCESSABLE_ENTITY);
-    }
+//    public function response(array $errors)
+//    {
+//        $transformed = [];
+//
+//        foreach ($errors as $field => $message) {
+//            $transformed[] = [
+//                'field' => $field,
+//                'message' => $message[0]
+//            ];
+//        }
+//
+//        return Response::json([
+//            'status' => false,
+//            'errors' => $transformed
+//        ], JsonResponse::HTTP_UNPROCESSABLE_ENTITY);
+//    }
 }

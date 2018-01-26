@@ -17,14 +17,14 @@ trait IssueTokenTrait
         try {
             $url = request()->root() . '/oauth/token';
 
-            $params = array_merge(config('passport.proxy', [
+            $params = array_merge(config('passport.proxy'), [
                 'username' => request('email'),
                 'password' => request('password'),
-            ]));
+            ]);
 
             $respond = $http->request('POST', $url, ['form_params' => $params]);
         } catch (RequestException $exception) {
-            throw new UnauthorizedException('请求失败,服务器错误');
+            throw new UnauthorizedException('请求失败,服务器错误' . $exception->getMessage() . json_encode($params));
         }
 
         if ($respond->getStatusCode() !== 401) {
