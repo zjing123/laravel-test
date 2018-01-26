@@ -30,7 +30,7 @@ class UserController extends ApiController
             return $this->failed($e->getMessage());
         }
 
-        return $this->success(['user' => $user]);
+        return $this->success(['tokens' => $tokens, 'user' => $user]);
     }
 
     public function register(RegisterRequest $request)

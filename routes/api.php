@@ -13,7 +13,7 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::post('login', 'UserController@login');
+Route::post('login', ['as' => 'login', 'uses' => 'UserController@login']);
 Route::post('register', 'UserController@register');
 Route::post('logout', 'UserController@logout');
 
@@ -22,5 +22,6 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::group(['middleware' => ['auth:api']], function () {
-    
+    Route::resource('fights', 'FightController');
+    Route::resource('questions', 'QuestionController');
 });
