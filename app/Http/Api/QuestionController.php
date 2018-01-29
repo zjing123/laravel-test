@@ -2,8 +2,10 @@
 
 namespace App\Http\Api;
 
+use App\Http\Resources\AnswersResource;
 use App\Http\Resources\QuestionsResource;
 use App\Models\Question;
+use App\Models\Answer;
 use Illuminate\Http\Request;
 
 class QuestionController extends ApiController
@@ -17,6 +19,11 @@ class QuestionController extends ApiController
     {
         $questions = Question::with('answers')->find(1);
         $questions = QuestionsResource::make($questions)->hide(['bad', 'good']);
+
+        return $questions;
+//
+//        $questions = AnswersResource::collection(Answer::all())->hide(['id']);
+
         return $this->success($questions);
     }
 

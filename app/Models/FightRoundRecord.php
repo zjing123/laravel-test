@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class FightRecord extends Model
+class FightRoundRecord extends Model
 {
     /**
      * The attributes that are mass assignable.
@@ -12,6 +12,11 @@ class FightRecord extends Model
      * @var array
      */
     protected $fillable = [
-        'fight_id', 'user_id', 'question_id', 'result', 'completed'
+        'round_id', 'user_id', 'result', 'completed'
     ];
+
+    public function round()
+    {
+        return $this->belongsTo(FightRound::class, 'round_id');
+    }
 }

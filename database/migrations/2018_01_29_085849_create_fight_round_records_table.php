@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateFightRecordsTable extends Migration
+class CreateFightRoundRecordsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,12 @@ class CreateFightRecordsTable extends Migration
      */
     public function up()
     {
-        Schema::create('fight_records', function (Blueprint $table) {
+        Schema::create('fight_round_records', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('fight_id');
+            $table->unsignedInteger('round_id');
             $table->unsignedInteger('user_id');
-            $table->unsignedInteger('question_id');
             $table->text('result')->nullable();
-            $table->boolean('completed');
+            $table->boolean('completed')->default(0);
             $table->timestamps();
         });
     }
@@ -31,6 +30,6 @@ class CreateFightRecordsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('fight_records');
+        Schema::dropIfExists('fight_round_records');
     }
 }

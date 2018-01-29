@@ -27,4 +27,22 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    public function fights()
+    {
+        return $this->hasMany(Fight::class);
+    }
+
+    public function fightings()
+    {
+        return $this->hasMany(Fight::class, 'to_user_id');
+    }
+
+    public function allFight()
+    {
+        $fights = $this->fights()->with('rounds.records')->get();
+        $fightings = $this->fightings;
+
+        return $fights;
+    }
 }

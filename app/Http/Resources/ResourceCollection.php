@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\ResourceCollection as LaravelResourceCollection;
 
-class ResourceCollection extends LaravelResourceCollection
+abstract class ResourceCollection extends LaravelResourceCollection
 {
     /**
      * @var array
@@ -38,10 +38,5 @@ class ResourceCollection extends LaravelResourceCollection
      * @param $request
      * @return array
      */
-    protected function processCollection($request)
-    {
-        return $this->collection->map(function(Resource $resource) use ($request) {
-            return $resource->hide($this->withoutFields)->toArray();
-        })->all();
-    }
+    abstract protected function processCollection($request);
 }

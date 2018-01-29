@@ -41,7 +41,7 @@ class UsersResourceCollection extends ResourceCollection
     protected function processCollection($request)
     {
         return $this->collection->map(function(UsersResource $resource) use ($request) {
-            return $resource->hide($this->withoutFields)->toArray();
+            return $resource->hide($this->withoutFields)->toArray($request);
         })->all();
     }
 }
