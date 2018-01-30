@@ -2,7 +2,7 @@
 
 namespace App\Http\Resources;
 
-class AnswersResource extends Resource
+class FightRoundsResource extends Resource
 {
     /**
      * Transform the resource into an array.
@@ -14,8 +14,9 @@ class AnswersResource extends Resource
     {
         return $this->filterFields([
             'id' => $this->id,
+            'fight_id' => $this->fight_id,
             'question_id' => $this->question_id,
-            'title' => $this->title,
+            'completed' => $this->completed,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ]);
@@ -23,7 +24,7 @@ class AnswersResource extends Resource
 
     public static function collection($resource)
     {
-        return tap(new AnswersResourceCollection($resource), function($collection) {
+        return tap(new FightRoundsResourceCollection($resource), function($collection) {
             $collection->collects = __CLASS__;
         });
     }

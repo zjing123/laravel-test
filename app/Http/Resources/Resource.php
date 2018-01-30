@@ -18,4 +18,13 @@ class Resource extends LaravelResource
     {
         return collect($array)->forget($this->withoutFields)->toArray();
     }
+
+    protected function mergeTimestamps()
+    {
+        return [
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
+        ];
+    }
+
 }

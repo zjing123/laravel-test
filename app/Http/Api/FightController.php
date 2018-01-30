@@ -5,6 +5,7 @@ namespace App\Http\Api;
 use App\Models\Fight;
 use App\Models\Question;
 use App\Repositories\QuestionRepository;
+use App\Repositories\FightRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -26,15 +27,17 @@ class FightController extends ApiController
 
     public function store(Request $request)
     {
-        $user = $request->user();
-        $fight = Fight::where('to_user_id', 0)
-            ->where('user_id', '<>', $user->id)
-            ->first();
-
-        $rounds = config('fight.rounds', 5);
-
         DB::enableQueryLog();
-        $questions = $this->questionRepository->getFightQuestions();
+        $user = $request->user();
+        $fightRepository = app(FightRepository::class);
+        $fight = $fightRepository->matchFight($user->id);
+
+        if (empty($fight)) {
+            $fight = $fightRepository->createFight($user->id);
+
+        }
+
+        return $fight;
         print_r(DB::getQueryLog());exit;
         return $questions;
     }

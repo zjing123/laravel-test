@@ -17,7 +17,6 @@ class CreateFightsTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('user_id');
             $table->unsignedInteger('to_user_id')->default(0);
-            $table->string('questions');
             $table->unsignedInteger('resign')->default(0);
             $table->boolean('completed')->default(0);
             $table->timestamps();
