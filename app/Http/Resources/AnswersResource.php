@@ -12,13 +12,15 @@ class AnswersResource extends Resource
      */
     public function toArray($request)
     {
-        return $this->filterFields([
-            'id' => $this->id,
-            'question_id' => $this->question_id,
-            'title' => $this->title,
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
-        ]);
+        return $this->filterFields(
+            array_merge([
+                'id' => $this->id,
+                'question_id' => $this->question_id,
+                'title' => $this->title,
+                'created_at' => $this->created_at,
+                'updated_at' => $this->updated_at,
+            ], parent::toArray($request))
+        );
     }
 
     public static function collection($resource)

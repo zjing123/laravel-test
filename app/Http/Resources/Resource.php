@@ -8,6 +8,16 @@ class Resource extends LaravelResource
 {
     protected $withoutFields = [];
 
+    protected $addFieldList = [];
+
+    public function toArray($request)
+    {
+        return array_merge(
+            $this->addFieldList,
+            $this->mergeTimestamps()
+        );
+    }
+
     public function hide(array $fields)
     {
         $this->withoutFields = $fields;
@@ -19,11 +29,16 @@ class Resource extends LaravelResource
         return collect($array)->forget($this->withoutFields)->toArray();
     }
 
+    public function addFields($key, $value)
+    {
+        $this->addFieldList[$key] = $value;
+    }
+
     protected function mergeTimestamps()
     {
         return [
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
+            'created_at' => (string)$this->created_at,
+            'updated_at' => (string)$this->updated_at,
         ];
     }
 

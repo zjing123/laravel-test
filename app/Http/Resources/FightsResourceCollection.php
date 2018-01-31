@@ -2,6 +2,8 @@
 
 namespace App\Http\Resources;
 
+use App\Http\Resources\ResourceCollection;
+
 class FightsResourceCollection extends ResourceCollection
 {
     public function processCollection($request)

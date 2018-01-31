@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use App\Http\Resources\Resource;
 
-class FightRoundsResource extends Resource
+class FightRoundRecordsResource extends Resource
 {
     /**
      * Transform the resource into an array.
@@ -16,18 +16,19 @@ class FightRoundsResource extends Resource
     {
         return $this->filterFields(
             array_merge([
-                'id' => $this->id,
-                'fight_id' => $this->fight_id,
-                'question_id' => $this->question_id,
-                'completed' => $this->completed,
-                'records' => FightRoundRecordsResource::collection($this->whenLoaded('records')) ,
+                'id'        => $this->id,
+                'round_id'  => $this->round_id,
+                'user_id'   => $this->user_id,
+                'result'    => $this->result,
+                'score'     => $this->score,
+                'completed' => $this->completed
             ], parent::toArray($request))
         );
     }
 
     public static function collection($resource)
     {
-        return tap(new FightRoundsResourceCollection($resource), function($collection) {
+        return tap(new FightRoundRecordsResourceCollection($resource), function($collection) {
             $collection->collects = __CLASS__;
         });
     }

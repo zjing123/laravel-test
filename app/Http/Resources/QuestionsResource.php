@@ -2,19 +2,27 @@
 
 namespace App\Http\Resources;
 
-use App\Models\Answer;
+use App\Http\Resources\Resource;
 
 class QuestionsResource extends Resource
 {
     public function toArray($request)
     {
-        return $this->filterFields([
-            'id' => $this->id,
-            'title' => $this->title,
-            'bad' => $this->bad,
-            'good' => $this->good,
-            'answers' => AnswersResource::collection($this->whenLoaded('answers'))->hide(['id', 'created_at', 'updated_at']),
-        ]);
+        return $this->filterFields(
+            array_merge([
+                'id' => $this->id,
+                'title' => $this->title,
+                'bad' => $this->bad,
+                'good' => $this->good,
+                'answers' => $this->getAnswerList,
+            ], parent::toArray($request))
+        );
+    }
+
+    public function getAnswerList()
+    {
+        return AnswersResource::collection($this->whenLoaded('answers'))
+                                ->hide(['id', 'created_at', 'updated_at']);
     }
 
     public static function collection($resource)
